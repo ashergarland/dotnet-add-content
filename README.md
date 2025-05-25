@@ -1,10 +1,3 @@
-Perfect — a polished `README.md` is essential for visibility and usability on GitHub and NuGet. Here's a **complete, professional `README.md`** tailored for your tool, `dotnet-add-content`.
-
----
-
-## ✅ `README.md` for `dotnet-add-content`
-
-````md
 # dotnet-add-content
 
 **`dotnet-add-content`** is a custom .NET CLI tool that makes it easy to add content file includes to `.csproj` or `.props` files — with support for inline adds or reusable imports.
