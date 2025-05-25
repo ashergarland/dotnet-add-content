@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- CLI tool specific -->
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>add-content</ToolCommandName>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- NuGet metadata -->
+    <Version>1.0.0</Version>
+    <Authors>Asher Garland</Authors>
+    <Company>Asher Garland</Company>
+    <PackageId>dotnet-add-content</PackageId>
+    <Description>A dotnet CLI tool to add content file references to .csproj files, inline or .props files.</Description>
+    <PackageTags>dotnet cli tool csproj content props</PackageTags>
+    <RepositoryUrl>https://github.com/ashergarland/dotnet-add-content</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
+  </ItemGroup>
+
+</Project>
