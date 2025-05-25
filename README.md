@@ -1,10 +1,10 @@
 # dotnet-add-content
 
+![NuGet](https://img.shields.io/nuget/v/dotnet-add-content?label=nuget)
+
 **`dotnet-add-content`** is a custom .NET CLI tool that makes it easy to add content file includes to `.csproj` or `.props` files — with support for inline adds, reusable props files, and automatic import wiring.
 
 > Use it to include CSVs, assets, configs, docs, or other static files in your build output — cleanly and reproducibly.
-
----
 
 ## ✨ Features
 
@@ -49,8 +49,6 @@ Adds this:
 </ItemGroup>
 ```
 
----
-
 ### 2️⃣ Add or update a `.props` file with includes
 
 ```bash
@@ -76,8 +74,6 @@ Use `--overwrite` to regenerate the file:
 dotnet add-content --file Shared.props --include "docs/**/*.md" --overwrite
 ```
 
----
-
 ### 3️⃣ Import a `.props` file into a `.csproj`
 
 ```bash
@@ -91,8 +87,6 @@ Adds:
 ```
 
 If the import already exists, it will not be duplicated.
-
----
 
 ### 4️⃣ Do both in one step
 
@@ -130,8 +124,6 @@ This is useful when developing or testing local changes before publishing.
 dotnet tool uninstall -g dotnet-add-content
 ```
 
----
-
 ### 🔨 2. Build the NuGet package
 
 ```bash
@@ -144,8 +136,6 @@ Generates:
 ./DotnetAddContent/bin/Release/dotnet-add-content.1.0.0.nupkg
 ```
 
----
-
 ### ➕ 3. Reinstall from local build
 
 ```bash
@@ -153,8 +143,6 @@ dotnet tool install --global --add-source ./DotnetAddContent/bin/Release dotnet-
 ```
 
 ✅ Will run using .NET 9 if available, or fallback to .NET 8 (thanks to `<RollForward>Major</RollForward>`)
-
----
 
 ### 🚀 4. Run the CLI
 
@@ -191,6 +179,40 @@ MIT License © 2024 Asher Garland
 ## 📦 NuGet Package
 
 📦 [nuget.org/packages/dotnet-add-content](https://www.nuget.org/packages/dotnet-add-content)
+
+
+### 📦 Releasing a New Version to NuGet
+
+This project uses GitHub Actions to automatically publish to [nuget.org](https://www.nuget.org/packages/dotnet-add-content) when a new version is tagged.
+
+#### 🔑 1. Prerequisites
+
+* A GitHub Actions secret `NUGET_API_KEY` must be configured in the repo:
+
+  * [Create an API key on nuget.org](https://www.nuget.org/account/apikeys)
+  * Scope it to `dotnet-add-content` only
+  * Add it as a [GitHub secret](https://github.com/{your-org}/{your-repo}/settings/secrets/actions) with name: `NUGET_API_KEY`
+
+#### 🚀 2. Publish a Release
+
+Bump your version in the `.csproj`, then:
+
+```bash
+git commit -am "release: v1.0.1"
+git tag v1.0.1
+git push origin main --tags
+```
+
+This will:
+
+* Run tests
+* Build and pack the tool
+* Push to NuGet using your API key
+
+### 📌 Notes
+
+* `dotnet tool install -g dotnet-add-content` will get the latest published version
+* The CLI targets `.NET 8+` and uses `<RollForward>Major</RollForward>` so it works on .NET 9+
 
 ---
 
