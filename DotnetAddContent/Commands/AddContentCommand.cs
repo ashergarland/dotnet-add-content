@@ -99,7 +99,7 @@ public static class AddContentCommand
             // Scenario 3: Add props import only
             if (file != null && project != null && include == null)
             {
-                var imported = CsprojEditor.AddImport(project, file.FullName);
+                var imported = CsprojEditor.AddImport(project, file);
                 Console.WriteLine(imported
                     ? $"✅ Imported {file.Name} into {project.Name}"
                     : $"ℹ️ Import already exists in {project.Name}");
@@ -121,7 +121,7 @@ public static class AddContentCommand
                         : $"ℹ️ Include already present: {include}");
                 }
 
-                var imported = CsprojEditor.AddImport(project, file.FullName);
+                var imported = CsprojEditor.AddImport(project, file);
                 Console.WriteLine(imported
                     ? $"✅ Imported {file.Name} into {project.Name}"
                     : $"ℹ️ Import already exists in {project.Name}");

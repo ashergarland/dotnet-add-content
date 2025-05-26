@@ -21,15 +21,18 @@ public static class CsprojEditor
         doc.Save(project.FullName);
     }
 
-    public static bool AddImport(FileInfo project, string propsPath)
+    public static bool AddImport(FileInfo project, FileInfo propsFile)
     {
         var doc = XDocument.Load(project.FullName);
         var ns = doc.Root?.Name.Namespace ?? "";
 
-        var normalizedPath = propsPath.Replace("\\", "/");
+        var normalizedPath = Path
+            .GetRelativePath(project.DirectoryName!, propsFile.FullName)
+            .Replace("\\", "/");
 
-        bool alreadyImported = doc.Root?.Elements(ns + "Import")
-            .Any(e => e.Attribute("Project")?.Value == normalizedPath) ?? false;
+        bool alreadyImported = doc.Root?
+            .Elements(ns + "Import")
+            .Any(e => string.Equals(e.Attribute("Project")?.Value.ToLower(), normalizedPath, StringComparison.OrdinalIgnoreCase)) ?? false;
 
         if (!alreadyImported)
         {

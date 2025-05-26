@@ -19,14 +19,19 @@ public class CsprojEditorTests
     [Fact]
     public void AddImport_Adds_Import_If_Not_Already_Present()
     {
-        var csprojPath = Path.Combine(Path.GetTempPath(), "test.csproj");
+        var dir = Path.GetTempPath();
+        var csprojPath = Path.Combine(dir, "test.csproj");
         File.WriteAllText(csprojPath, "<Project></Project>");
 
-        CsprojEditor.AddImport(new FileInfo(csprojPath), "props/my.props");
+        var projectFile = new FileInfo(csprojPath);
+        var propsFile = new FileInfo(Path.Combine(dir, "props/my.props"));
+
+        CsprojEditor.AddImport(projectFile, propsFile);
 
         var content = File.ReadAllText(csprojPath);
         content.Should().Contain("<Import Project=\"props/my.props\"");
     }
+
 
     [Fact]
     public void AddImport_DoesNot_Duplicate()
@@ -35,8 +40,8 @@ public class CsprojEditorTests
         File.WriteAllText(csprojPath, "<Project></Project>");
         var file = new FileInfo(csprojPath);
 
-        CsprojEditor.AddImport(file, "tools/shared.props");
-        CsprojEditor.AddImport(file, "tools/shared.props");
+        CsprojEditor.AddImport(file, new FileInfo("tools/shared.props"));
+        CsprojEditor.AddImport(file, new FileInfo("tools/shared.props"));
 
         var count = File.ReadAllText(csprojPath).Split("tools/shared.props").Length - 1;
         count.Should().Be(1);
