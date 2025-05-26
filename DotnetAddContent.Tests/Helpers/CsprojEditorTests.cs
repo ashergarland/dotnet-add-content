@@ -2,6 +2,7 @@ using DotnetAddContent.Helpers;
 using FluentAssertions;
 
 namespace DotnetAddContent.Tests.Helpers;
+
 public class CsprojEditorTests
 {
     [Fact]
@@ -45,5 +46,32 @@ public class CsprojEditorTests
 
         var count = File.ReadAllText(csprojPath).Split("tools/shared.props").Length - 1;
         count.Should().Be(1);
+    }
+    
+    [Fact]
+    public void AddImport_Uses_Relative_Path_In_Import()
+    {
+        // Arrange
+        var tempDir = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+        Directory.CreateDirectory(tempDir);
+
+        var csprojPath = Path.Combine(tempDir, "TestProject.csproj");
+        var propsPath = Path.Combine(tempDir, "Shared", "my.props");
+        Directory.CreateDirectory(Path.GetDirectoryName(propsPath)!);
+
+        File.WriteAllText(csprojPath, "<Project></Project>");
+        File.WriteAllText(propsPath, "<Project></Project>");
+
+        var projectFile = new FileInfo(csprojPath);
+        var propsFile = new FileInfo(propsPath);
+
+        // Act
+        CsprojEditor.AddImport(projectFile, propsFile);
+
+        // Assert
+        var xml = File.ReadAllText(csprojPath);
+        xml.Should().Contain("<Import Project=\"Shared/my.props\"");
+        xml.Should().NotContain(":\\"); // ensure not absolute path
+        xml.Should().NotContain("/Users/"); // cross-platform safety
     }
 }
